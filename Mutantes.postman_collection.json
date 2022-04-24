@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "23045ae9-994f-4bbc-b1b6-a1a3e0da657a",
+		"name": "Mutantes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Es mutante?",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"dna\":[\"ATGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCCTA\",\"TCACTG\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}/mutant/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"mutant",
+						""
+					]
+				},
+				"description": "IN: Cadena a evaluar N*N\n\n*   Cadena DNA\n    \n\nOUTPUT: Si la cadena de DNA es de una mutante\n\n*   Boolean"
+			},
+			"response": []
+		}
+	]
+}

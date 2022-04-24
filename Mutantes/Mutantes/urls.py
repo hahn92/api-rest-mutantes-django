@@ -14,8 +14,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static 
+from django.urls import path, include 
+
+# JWT
+from validador.token import MyTokenObtainPairView, MyTokenRefreshView
+
 
 urlpatterns = [
+ ################################################# ADMIN #################################################
     path('admin/', admin.site.urls),
+    
+    ################################################# API #################################################
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
+    path('mutant/', include(('validador.urls', 'validador'), namespace='validador')),
+
 ]
+if not settings.MEDIA:
+    urlpatterns += static(
+        settings.STATIC_URL, 
+        document_root=settings.STATIC_ROOT
+    )
+    urlpatterns += static(
+        settings.MEDIA_URL, 
+        document_root=settings.MEDIA_ROOT
+    )
+

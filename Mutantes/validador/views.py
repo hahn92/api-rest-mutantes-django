@@ -1,7 +1,22 @@
 from django.shortcuts import render
+from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+from rest_framework import status
 
 # Create your views here.
 
+
+@api_view(['POST'])
+def Validador(request):
+    if request.method == 'POST':
+        dataJ = JSONParser().parse(request)  
+        dna = dataJ['dna']
+        print(dna)
+        if isMutant(dna):
+            return JsonResponse({"esMutante": True}, status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({"esMutante": False}, status=status.HTTP_200_OK)
 
 
 
