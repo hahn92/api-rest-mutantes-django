@@ -29,7 +29,7 @@ urlpatterns = [
     ################################################# API #################################################
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
-    path('mutant/', include(('validador.urls', 'validador'), namespace='validador')),
+    path('', include(('validador.urls', 'validador'), namespace='validador')),
 
 ]
 if not settings.MEDIA:

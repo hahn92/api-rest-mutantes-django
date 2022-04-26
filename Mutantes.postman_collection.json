@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \n    \"dna\":[\"ATGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCCTA\",\"TCACTG\"]\n}",
+					"raw": "{ \n    \"dna\":[\"ATGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCCTA\",\"TCACTG\"] \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -31,6 +31,25 @@
 					]
 				},
 				"description": "IN: Cadena a evaluar N*N\n\n*   Cadena DNA\n    \n\nOUTPUT: Si la cadena de DNA es de una mutante\n\n*   Boolean"
+			},
+			"response": []
+		},
+		{
+			"name": "Estadisticas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}/stats/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"stats",
+						""
+					]
+				}
 			},
 			"response": []
 		}

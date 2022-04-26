@@ -4,21 +4,66 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from rest_framework import status
 
-# Create your views here.
+# Serializer
+from .serializers import MutantSerializer
 
+# Models
+from .models import Mutant
+
+# Create your views here.
 
 @api_view(['POST'])
 def Validador(request):
-    if request.method == 'POST':
-        dataJ = JSONParser().parse(request)  
-        dna = dataJ['dna']
-        print(dna)
-        if isMutant(dna):
-            return JsonResponse({"esMutante": True}, status=status.HTTP_200_OK)
-        else:
-            return JsonResponse({"esMutante": False}, status=status.HTTP_200_OK)
+  """
+  Recibe una cadena de ADN y valida si es o no una secuencia mutante.
+  """
+  if request.method == 'POST':
+    dataJ = JSONParser().parse(request)  
+    dna = dataJ['dna']  
+    if isMutant(dna):
+      saveDNA(dna, True)
+      return JsonResponse({}, status=status.HTTP_200_OK)
+    else:
+      saveDNA(dna, False)
+      return JsonResponse({}, status=status.HTTP_403_FORBIDDEN)
 
 
+@api_view(['POST'])
+def Estadisticas(request):
+  """
+  consulta las estadisticas de la base de datos de mutantes
+  """
+  if request.method == 'POST':
+    count_mutant_dna = Mutant.objects.filter(is_mutant=True).count()
+    count_human_dna = Mutant.objects.filter(is_mutant=False).count()
+    ratio = (100 *  count_mutant_dna ) / (count_human_dna + count_mutant_dna)
+    return JsonResponse({
+        "count_mutant_dna": count_mutant_dna, "count_human_dna": count_human_dna, "ratio": "{:.2f}%".format(ratio)}, 
+        status=status.HTTP_200_OK
+    )
+
+
+def saveDNA(dna, state):
+  data = {}
+  data['dna'] = "{}".format(dna)
+  data['is_mutant'] = state
+  es_valido = True
+  for i in range(len(dna)):
+    for j in range(len(dna[i])):
+      if dna[i][j] == "A" or dna[i][j] == "T" or dna[i][j] == "C" or dna[i][j] == "G":
+        pass
+      else:
+        es_valido = False
+    
+  if es_valido:
+    serializer = MutantSerializer(data=data)
+    if serializer.is_valid():
+      serializer.save()
+    else:
+      print(serializer.errors)
+  else:
+    print("El dna no es valido")
+     
 
 def isMutant(dna):
   """
@@ -49,7 +94,3 @@ def isMutant(dna):
           #print(dna[i][j] + dna[i-1][j+1] + dna[i-2][j+2] + dna[i-3][j+3])
           return True
   return False
-
-#dna = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
-
-#print(isMutant(dna))

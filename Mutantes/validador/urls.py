@@ -7,8 +7,14 @@ from validador import views
 urlpatterns = [
 
     path(
-        route='',
+        route='mutant/',
         view=views.Validador,
+        name='GetValidador'
+    ),
+
+    path(
+        route='stats/',
+        view=views.Estadisticas,
         name='GetValidador'
     ),
 
